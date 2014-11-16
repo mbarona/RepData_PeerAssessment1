@@ -22,7 +22,7 @@ activity_data$date <- as.Date(activity_data$date)
 ## What is mean total number of steps taken per day?
 
 ###1. Make a histogram of the total number of steps taken each day
-```{r hist1, echo=FALSE, fig.width=8}
+```{r hist1, echo=TRUE, fig.width=8}
 
 # 1. Make a histogram of the total number of steps taken each day
 
@@ -53,7 +53,7 @@ Q2dat <- join(meanDay, medianDay, by = "date")
 ```
 
 **MEAN and MEDIAN of Total Number Steps Taken per Day (First 20 results)**
-```{r print1, echo=FALSE}
+```{r print1, echo=TRUE}
 head(Q2dat,20)
 
 ```
@@ -61,7 +61,7 @@ head(Q2dat,20)
 
 ###1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-```{r timeseries1, echo=FALSE, fig.width=8}
+```{r timeseries1, echo=TRUE, fig.width=8}
 
 #1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
@@ -84,7 +84,7 @@ plot(Q3dat$interval,Q3dat$aveSteps,
 
 ###2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r max1, echo=FALSE}
+```{r max1, echo=TRUE}
 #2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 #computes maximum
@@ -93,7 +93,7 @@ maximum <- max(Q3dat$aveSteps)
 max <- Q3dat[which(Q3dat[,"aveSteps"] == maximum),]
 ```
 
-```{r max2, echo=FALSE}
+```{r max2, echo=TRUE}
 max_interval <- max[,1]
 max_steps <- max[,2]
 ```
@@ -105,7 +105,7 @@ Interval no. **`r max_interval`** contains the maximum steps with **`r max_steps
 ###1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
 **No. of Missing Values for Each Variable in the Data**
-```{r missingData1, echo=FALSE}
+```{r missingData1, echo=TRUE}
 
 #Calculate and report missing values in data
 colSums(is.na(activity_data))
@@ -140,12 +140,12 @@ head(activity_data, 10)
 ```
 
 **Number of Missing Values in New Dataset**
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 colSums(is.na(activity_data))
 ```
 
 ###4.1 Make a histogram of the total number of steps taken each day  
-```{r, echo=FALSE, fig.width = 8}
+```{r, echo=TRUE, fig.width = 8}
 
 #Make a histogram of the total number of steps taken each day
 plot(activity_data$date,activity_data$steps,
@@ -170,7 +170,7 @@ Q4dat <- join(meanDay2, medianDay2, by = "date")
 ```
 
 **MEAN and MEDIAN of Total Number of Steps Taken (First 20 results)**
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 
 head(Q4dat,20)
 
@@ -192,7 +192,7 @@ head(activity_data, 10)
 ```
 
 ###2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
-```{r panelplot, echo=FALSE, fig.width = 8}
+```{r panelplot, echo=TRUE, fig.width = 8}
 
 aveSteps3 <- ddply(activity_data, c("interval","wday"), 
                  summarise, 
