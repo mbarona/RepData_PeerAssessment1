@@ -1,13 +1,9 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 #set working directory
 setwd("D:/0 Online Courses/Coursera/Data Science Specialization - John Hopkins School of Public Health/05 Reproducible Research/WD")
 
@@ -22,8 +18,8 @@ activity_data$date <- as.Date(activity_data$date)
 ## What is mean total number of steps taken per day?
 
 1. Make a histogram of the total number of steps taken each day
-```{r}
 
+```r
 # 1. Make a histogram of the total number of steps taken each day
 
 
@@ -36,10 +32,12 @@ plot(activity_data$date,activity_data$steps,
      main = "Total Number of Steps Taken per Day")
 ```
 
+![](./PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
 2. Calculate and report the mean and median total number of steps taken per day
 
-```{r}
 
+```r
 #calculates mean and median total number of steps taken per day
 library(plyr)
 meanDay <- ddply(activity_data,"date", 
@@ -51,17 +49,41 @@ medianDay <- ddply(activity_data,"date",
 ```
 
 MEAN and MEDIAN of Total Number Steps Taken per Day (First 20 results)
-```{r}
+
+```r
 Q2dat <- join(meanDay, medianDay, by = "date")
 head(Q2dat,20)
+```
 
+```
+##          date     mean median
+## 1  2012-10-01      NaN     NA
+## 2  2012-10-02  0.43750      0
+## 3  2012-10-03 39.41667      0
+## 4  2012-10-04 42.06944      0
+## 5  2012-10-05 46.15972      0
+## 6  2012-10-06 53.54167      0
+## 7  2012-10-07 38.24653      0
+## 8  2012-10-08      NaN     NA
+## 9  2012-10-09 44.48264      0
+## 10 2012-10-10 34.37500      0
+## 11 2012-10-11 35.77778      0
+## 12 2012-10-12 60.35417      0
+## 13 2012-10-13 43.14583      0
+## 14 2012-10-14 52.42361      0
+## 15 2012-10-15 35.20486      0
+## 16 2012-10-16 52.37500      0
+## 17 2012-10-17 46.70833      0
+## 18 2012-10-18 34.91667      0
+## 19 2012-10-19 41.07292      0
+## 20 2012-10-20 36.09375      0
 ```
 ## What is the average daily activity pattern?
 
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-```{r}
 
+```r
 #1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 
@@ -78,12 +100,14 @@ plot(Q3dat$interval,Q3dat$aveSteps,
      xlab = "interval", 
      ylab = "average steps",
      main = "Time Series Plot of 5-Minute Interval and Average Number of Steps Taken")
-
 ```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r}
+
+```r
 #2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 #computes maximum
@@ -91,9 +115,14 @@ maximum <- max(Q3dat$aveSteps)
 ```
 
 INTERVAL CONTAINING MAXIMUM NUMBER OF STEPS
-```{r}
-Q3dat[which(Q3dat[,"aveSteps"] == maximum),]
 
+```r
+Q3dat[which(Q3dat[,"aveSteps"] == maximum),]
+```
+
+```
+##     interval aveSteps
+## 104      835 206.1698
 ```
 
 ## Imputing missing values
@@ -101,11 +130,15 @@ Q3dat[which(Q3dat[,"aveSteps"] == maximum),]
         
 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-```{r}
 
+```r
 #Calculate and report missing values in data
 colSums(is.na(activity_data))
+```
 
+```
+##    steps     date interval 
+##     2304        0        0
 ```
 There are 2304 missing values in the Steps variable in the activity_data dataset.
 
@@ -113,7 +146,8 @@ There are 2304 missing values in the Steps variable in the activity_data dataset
 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
 Strategy: Use average steps per interval to fill-in the missing values
-```{r}
+
+```r
 #get the missing rows in the data
 missing <- is.na(activity_data)
 #dat2 extracts all rows with missing values
@@ -128,21 +162,42 @@ dat4 <- join(dat3,Q3dat, by = "interval", type = "left")
 
 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-```{r}
+
+```r
 #new data set with the average steps to fill in the missing values
 activity_data[missing,1]<-dat4$aveSteps
 
 head(activity_data, 10)
 ```
 
+```
+##        steps       date interval
+## 1  1.7169811 2012-10-01        0
+## 2  0.3396226 2012-10-01        5
+## 3  0.1320755 2012-10-01       10
+## 4  0.1509434 2012-10-01       15
+## 5  0.0754717 2012-10-01       20
+## 6  2.0943396 2012-10-01       25
+## 7  0.5283019 2012-10-01       30
+## 8  0.8679245 2012-10-01       35
+## 9  0.0000000 2012-10-01       40
+## 10 1.4716981 2012-10-01       45
+```
+
 Number of Missing Values in New Dataset
-```{r}
+
+```r
 colSums(is.na(activity_data))
 ```
 
-4.1 Make a histogram of the total number of steps taken each day  
-```{r}
+```
+##    steps     date interval 
+##        0        0        0
+```
 
+4.1 Make a histogram of the total number of steps taken each day  
+
+```r
 #Make a histogram of the total number of steps taken each day
 plot(activity_data$date,activity_data$steps,
      type = "h", 
@@ -152,8 +207,11 @@ plot(activity_data$date,activity_data$steps,
      main = "Total Number of Steps Taken per Day")
 ```
 
+![](./PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+
 4.2 Calculate and report the mean and median total number of steps taken per day. 
-```{r}
+
+```r
 #Calculate and report the mean and median total number of steps taken per day.
 meanDay2 <- ddply(activity_data,"date", 
                  summarise, 
@@ -164,10 +222,34 @@ medianDay2 <- ddply(activity_data,"date",
 ```
 
 MEAN and MEDIAN of Total Number of Steps Taken (First 20 results)
-```{r}
+
+```r
 Q4dat <- join(meanDay2, medianDay2, by = "date")
 head(Q4dat,20)
+```
 
+```
+##          date     mean   median
+## 1  2012-10-01 37.38260 34.11321
+## 2  2012-10-02  0.43750  0.00000
+## 3  2012-10-03 39.41667  0.00000
+## 4  2012-10-04 42.06944  0.00000
+## 5  2012-10-05 46.15972  0.00000
+## 6  2012-10-06 53.54167  0.00000
+## 7  2012-10-07 38.24653  0.00000
+## 8  2012-10-08 37.38260 34.11321
+## 9  2012-10-09 44.48264  0.00000
+## 10 2012-10-10 34.37500  0.00000
+## 11 2012-10-11 35.77778  0.00000
+## 12 2012-10-12 60.35417  0.00000
+## 13 2012-10-13 43.14583  0.00000
+## 14 2012-10-14 52.42361  0.00000
+## 15 2012-10-15 35.20486  0.00000
+## 16 2012-10-16 52.37500  0.00000
+## 17 2012-10-17 46.70833  0.00000
+## 18 2012-10-18 34.91667  0.00000
+## 19 2012-10-19 41.07292  0.00000
+## 20 2012-10-20 36.09375  0.00000
 ```
 
 4.3 Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
@@ -178,15 +260,14 @@ IT ONLY AFFECT THE ESTIMATES OF DATES WITH MISSING VALUES, ALL OTHERS REMAIN THE
 
 1.Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
-```{r}
 
+```r
 activity_data$wday <- as.factor(ifelse(weekdays(activity_data$date) %in% c("Saturday","Sunday"), "Weekend", "Weekday"))
-
 ```
 
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
-```{r}
 
+```r
 aveSteps3 <- ddply(activity_data, c("interval","wday"), 
                  summarise, 
                  mean = mean(steps, na.rm = TRUE))
@@ -197,5 +278,6 @@ qplot(interval, mean, data = aveSteps3,
       geom = "line", 
       ylab = "average steps",
       main = "Panel Plot of the 5-min Interval and Average Number of Steps Taken, Averaged Across Weekdays and Weekends")
-
 ```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-16-1.png) 
